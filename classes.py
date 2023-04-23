@@ -1,5 +1,5 @@
 from glob import glob
-from utils import count_images, open_masks, rm_alpha
+from SEGMENTATION.utils import count_images, open_masks, rm_alpha
 import torch
 import os
 from PIL import Image 
