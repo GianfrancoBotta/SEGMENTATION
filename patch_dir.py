@@ -1,4 +1,4 @@
-def patch_dir(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str):
+def patch_dir(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True):
   '''Creates train and validation patch directory and set the output directory for the patches
   to the given name.
   
@@ -7,16 +7,13 @@ def patch_dir(images_path: str, masks_path: str, dataset_name: str, out_dir_name
     masks_path: a string indicating the path of the masks folder
     dataset_name: a string indicating the name of the user's dataset ('Kumar', 'CPM17' or 'CoNSeP')
     out_dir_name: a string indicating the name given to the output directory ('train' or 'valid')
+    win_ size: a list containing the x and y size of the patch window
+    step_size: a list containing the x and y size of the step
+    extract_type: a string containing the type of patch extraction ('valid' or 'mirror')
+    type_classification: boolean determining whether to extract type map (only applicable to datasets with class labels)
   '''
 
   if __name__ == '__main__':
-
-      # Determines whether to extract type map (only applicable to datasets with class labels).
-      type_classification = True
-
-      win_size = [128, 128]
-      step_size = [64, 64]
-      extract_type = 'mirror'  # Choose 'mirror' or 'valid'. 'mirror'- use padding at borders. 'valid'- only extract from valid regions.
 
       save_root = '/content/patches'
       # a dictionary to specify where the dataset path should be
@@ -50,7 +47,7 @@ def patch_dir(images_path: str, masks_path: str, dataset_name: str, out_dir_name
           # file_list = glob(patterning("%s/*%s" % (ann_dir, ann_ext)))
           # file_list.sort()  # ensure same ordering across platform
 
-          rm_n_mkdir(out_dir1)
+          rm_n_mkdir(out_dir)
 
           pbar_format = "Process File: |{bar}| {n_fmt}/{total_fmt}[{elapsed}<{remaining},{rate_fmt}]"
           pbarx = tqdm.tqdm(
