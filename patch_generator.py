@@ -16,6 +16,10 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
   import cv2
   import random
   import shutil
+  import tqdm
+  import numpy as np
+  from SEGMENTATION.classes import MonusacDataset
+  from SEGMENTATION.patch_extractor import PatchExtractor
 
   dataset = MonusacDataset(images_path, masks_path)
   save_root = '/content/patches'
