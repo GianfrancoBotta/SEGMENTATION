@@ -90,7 +90,7 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
       for idx, patch in enumerate(patches):
         patch_norm = cv2.normalize(patch[:,:,0:2], None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
         patch_masks = patch[:,:,3:]
-        patch = np.concatenate(patch_norm, patch_masks)
+        patch = np.concatenate((patch_norm, patch_masks), axis=-1)
         np.save("{0}/{1}_{2:03d}.npy".format(out_dir, base_name, idx), patch)
         pbar.update()
       pbar.close()
@@ -102,7 +102,7 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
       for idx, patch in enumerate(sub_patches):
         patch_norm = cv2.normalize(patch[:,:,0:2], None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
         patch_masks = patch[:,:,3:]
-        patch = np.concatenate(patch_norm, patch_masks)
+        patch = np.concatenate((patch_norm, patch_masks), axis=-1)
         np.save("{0}/{1}_{2:03d}.npy".format(out_dir, base_name, idx), patch)
         pbar.update()
       pbar.close()
@@ -112,7 +112,7 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
       for idx, patch in enumerate(black_patches):
         patch_norm = cv2.normalize(patch[:,:,0:2], None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
         patch_masks = patch[:,:,3:]
-        patch = np.concatenate(patch_norm, patch_masks)
+        patch = np.concatenate((patch_norm, patch_masks), axis=-1)
         np.save("{0}/{1}_{2:03d}.npy".format(out_dir_black, base_name, idx), patch)
         pbar.update()
       pbar.close()
