@@ -37,16 +37,20 @@ class MonusacDataset(Dataset):
       img_name = path_as_list[-1].split('.')[0]
       image = Image.open(images[idx])
       image = np.asarray(image)
+      image = rm_alpha(image)
 
       #mask extraction
       img_masks = []
-
       masks_folder_path = os.path.join(self.masks_dir, patient_code, img_name)
-      ep, lym, macro, neutr = open_masks(masks_folder_path, image.shape)
 
-      image = rm_alpha(image)
+      if 'train' in self.masks_dir: 
+          ep, lym, macro, neutr = open_masks(masks_folder_path, image.shape)
+          sample = {'name': img_name, 'image': image, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
 
-      sample = {'name': img_name, 'image': image, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
+      if 'test' in self.masks_dir:
+          amb, ep, lym, macro, neutr = open_masks(masks_folder_path, image.shape)
+          sample = {'name': img_name, 'image': image, 'mask_amb': amb, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
+
 
       if self.transform:
         sample = self.transform(sample)
