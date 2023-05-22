@@ -58,10 +58,18 @@ def open_masks(masks_folder_path, image_shape):
       neutrophil = np.expand_dims(neutrophil, axis=-1)
   except:
     neutrophil = np.zeros(mask_shape)
+
+  if 'test' in masks_folder_path:
+    try:
+      ambiguous = skio.imread(os.path.join(masks_folder_path, 'Ambiguous', os.listdir(masks_folder_path+'/Ambiguous')[0]), plugin="tifffile")
+      if(len(ambiguous.shape) == 2):
+        ambiguous = np.expand_dims(ambiguous, axis=-1)
+    except:
+      ambiguous = np.zeros(mask_shape)
   
   os.chdir('/content')
     
-  return epithelial, lymphocyte, macrophage, neutrophil
+  return ambiguous, epithelial, lymphocyte, macrophage, neutrophil
 
 def rm_alpha(image):
   '''Removes alpha channel from images'''
