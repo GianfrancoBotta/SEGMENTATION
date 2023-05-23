@@ -36,12 +36,14 @@ class MonusacDataset(Dataset):
       path_as_list = img_path.split('/')
       patient_code = path_as_list[-2]
       img_name = path_as_list[-1].split('.')[0]
-      if (os.path.isfile(os.path.splitext(images[idx])[0] + '.tif')):
-        image = Image.open(images[idx])
+      tif_file = os.path.splitext(images[idx])[0] + '.tif'
+      svs_file = os.path.splitext(images[idx])[0]+'.svs'
+      if (os.path.isfile(tif_file)):
+        image = Image.open(tif_file)
         image = np.asarray(image)
         image = rm_alpha(image)
       else:
-        slide = slideio.open_slide(os.path.splitext(images[idx])[0]+'.svs',"SVS")
+        slide = slideio.open_slide(svs_file,"SVS")
         scene = slide.get_scene(0)
         image = scene.read_block()
 
