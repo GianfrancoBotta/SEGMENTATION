@@ -41,7 +41,7 @@ class MonusacDataset(Dataset):
         image = np.asarray(image)
         image = rm_alpha(image)
       else:
-        slide = slideio.open_slide(filename,"SVS")
+        slide = slideio.open_slide(os.path.splitext(images[idx])[0]+'.svs',"SVS")
         scene = slide.get_scene(0)
         image = scene.read_block()
 
