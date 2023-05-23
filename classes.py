@@ -5,6 +5,7 @@ import os
 from PIL import Image 
 import numpy as np
 from torch.utils.data import Dataset
+import slideio
 
 class MonusacDataset(Dataset):
     '''MoNuSAC Dataset.'''
@@ -35,9 +36,14 @@ class MonusacDataset(Dataset):
       path_as_list = img_path.split('/')
       patient_code = path_as_list[-2]
       img_name = path_as_list[-1].split('.')[0]
-      image = Image.open(images[idx])
-      image = np.asarray(image)
-      image = rm_alpha(image)
+      if (os.path.isfile(os.path.splitext(images[idx])[0] + '.tif')):
+        image = Image.open(images[idx])
+        image = np.asarray(image)
+        image = rm_alpha(image)
+      else:
+        slide = slideio.open_slide(filename,"SVS")
+        scene = slide.get_scene(0)
+        image = scene.read_block()
 
       #mask extraction
       img_masks = []
