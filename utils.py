@@ -59,7 +59,9 @@ def open_masks(masks_folder_path, image_shape):
   except:
     neutrophil = np.zeros(mask_shape)
 
-  os.chdir('/content')
+  if 'train' in masks_folder_path:
+    os.chdir('/content')
+    return epithelial, lymphocyte, macrophage, neutrophil
 
   if 'test' in masks_folder_path:
     try:
