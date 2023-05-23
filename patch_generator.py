@@ -76,7 +76,8 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
       amb = dataset[file_idx]['mask_amb']
       conc = np.concatenate((img, amb, ep, lym, macro, neutr), axis=-1)
 
-    if(img.shape[0] < win_size[0] and img.shape[1] < win_size[1]):
+    pad_win_dim = [img.shape[0] + win_size[0] - step_size[0], img.shape[1] + win_size[1] - step_size[1]]
+    if(img.shape[0] < pad_win_dim[0] and img.shape[1] < pad_win_dim[1]):
       continue
 
     sub_patches, black_patches = xtractor.extract(conc, extract_type)
