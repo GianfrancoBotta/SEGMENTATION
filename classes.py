@@ -28,7 +28,7 @@ class MonusacDataset(Dataset):
     def __getitem__(self, idx):
       
       #image extraction
-      images = [y for x in os.walk(self.img_dir) for y in glob(os.path.join(x[0], '*.tif'))]
+      images = [y for x in os.walk(self.img_dir) for y in glob(os.path.join(x[0], '*.xml'))]
 
       img_path = images[idx]
       img_path = os.path.normpath(img_path)
