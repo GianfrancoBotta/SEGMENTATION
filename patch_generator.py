@@ -72,13 +72,9 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
     macro = dataset[file_idx]['mask_macro']
     neutr = dataset[file_idx]['mask_neutr']
     conc = np.concatenate((img, ep, lym, macro, neutr), axis=-1)
-    if 'test' in masks_path:
-      amb = dataset[file_idx]['mask_amb']
-      conc = np.concatenate((img, amb, ep, lym, macro, neutr), axis=-1)
-
-    pad_win_dim = [img.shape[0] + win_size[0] - step_size[0], img.shape[1] + win_size[1] - step_size[1]]
-    if(pad_win_dim[0] < win_size[0] or pad_win_dim[1] < win_size[1]):
-      continue
+    # if 'test' in masks_path:
+    #   amb = dataset[file_idx]['mask_amb']
+    #   conc = np.concatenate((img, amb, ep, lym, macro, neutr), axis=-1)
 
     sub_patches, black_patches = xtractor.extract(conc, extract_type)
     pbar_format = "Extracting  : |{bar}| {n_fmt}/{total_fmt}[{elapsed}<{remaining},{rate_fmt}]"
