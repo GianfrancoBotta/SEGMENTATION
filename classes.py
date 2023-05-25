@@ -10,13 +10,15 @@ import slideio
 class MonusacDataset(Dataset):
     '''MoNuSAC Dataset.'''
 
-    def __init__(self, img_dir, masks_dir, transform=None, blue_chan = False):
+    def __init__(self, img_dir, masks_dir, transform=None, test=False, blue_chan=False):
         '''
         Arguments:
             img_dir (string): Directory with all the images.
             mask_dir (string): Directory with all the masks.
             transform (callable, optional): Optional transform to be applied
                 on a sample.
+            test (boolean): Indicating if the dataset is for train or test purpose
+            blue_chan (boolean): Indicating if the images have three channels or only the blue one
         '''
 
         self.img_dir = img_dir
@@ -53,11 +55,11 @@ class MonusacDataset(Dataset):
       img_masks = []
       masks_folder_path = os.path.join(self.masks_dir, patient_code, img_name)
 
-      if 'train' in self.masks_dir: 
+      if not(test): 
           ep, lym, macro, neutr = open_masks(masks_folder_path, image.shape)
           sample = {'name': img_name, 'image': image, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
 
-      if 'test' in self.masks_dir:
+      if test:
           amb, ep, lym, macro, neutr = open_masks(masks_folder_path, image.shape)
           sample = {'name': img_name, 'image': image, 'mask_amb': amb, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
 
