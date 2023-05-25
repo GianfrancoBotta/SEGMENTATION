@@ -48,8 +48,6 @@ class MonusacDataset(Dataset):
         scene = slide.get_scene(0)
         image = scene.read_block()
       
-      if self.blue_chan:
-         image = image[:,:,-1]
 
       #mask extraction
       img_masks = []
@@ -63,6 +61,8 @@ class MonusacDataset(Dataset):
           amb, ep, lym, macro, neutr = open_masks(masks_folder_path, image.shape)
           sample = {'name': img_name, 'image': image, 'mask_amb': amb, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
 
+      if self.blue_chan:
+         sample['image'] = image[:,:,-1]
 
       if self.transform:
         sample = self.transform(sample)
