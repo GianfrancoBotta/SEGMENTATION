@@ -3,7 +3,7 @@ import numpy as np
 import skimage.io as skio
 
 
-def count_images(folder, test=False):
+def count_images(folder):
   '''Counts the images in all the subfolders of folder or in folder if it does not have subfolders'''
   
   len=0
@@ -24,7 +24,7 @@ def count_images(folder, test=False):
 
   return len
 
-def open_masks(masks_folder_path, image_shape):
+def open_masks(masks_folder_path, image_shape, test=False):
   '''Finds all the masks regarding epithelial cells, lymphocytes, macrophages and neutrophils in MoNuSAC_masks'''
 
   mask_shape = list(image_shape)
