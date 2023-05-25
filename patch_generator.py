@@ -1,4 +1,4 @@
-def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True, merge_dir: bool = True):
+def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True, merge_dir: bool = True, blue_chan: bool = False):
   '''Creates train and validation patch directory and set the output directory for the patches
   to the given name.
 
@@ -22,7 +22,7 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
   from SEGMENTATION.patch_extractor import PatchExtractor
   from hover_net.misc.utils import rm_n_mkdir
 
-  dataset = MonusacDataset(images_path, masks_path)
+  dataset = MonusacDataset(images_path, masks_path, blue_chan)
   save_root = '/content/patches'
   save_root_black = '/content/black_patches'
   parser = MonusacDataset
