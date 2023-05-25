@@ -49,7 +49,7 @@ class MonusacDataset(Dataset):
         image = scene.read_block()
       
       if self.blue_chan:
-         image = image[-1]
+         image = image[:,:,-1]
 
       #mask extraction
       img_masks = []
