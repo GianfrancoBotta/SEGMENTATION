@@ -24,7 +24,7 @@ class MonusacDataset(Dataset):
         self.img_dir = img_dir
         self.masks_dir = masks_dir
         self.transform = transform
-	self.test = test
+	      self.test = test
         self.blue_chan = blue_chan
 
     def __len__(self):
