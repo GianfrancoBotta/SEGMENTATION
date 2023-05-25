@@ -62,7 +62,9 @@ class MonusacDataset(Dataset):
           sample = {'name': img_name, 'image': image, 'mask_amb': amb, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
 
       if self.blue_chan:
-         sample['image'] = image[:,:,-1]
+         sample['image'] = np.expand_dims(image[:,:,-1], axis=-1)
+
+
 
       if self.transform:
         sample = self.transform(sample)
