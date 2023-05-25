@@ -3,7 +3,7 @@ import numpy as np
 import skimage.io as skio
 
 
-def count_images(folder):
+def count_images(folder, test=False):
   '''Counts the images in all the subfolders of folder or in folder if it does not have subfolders'''
   
   len=0
@@ -59,11 +59,11 @@ def open_masks(masks_folder_path, image_shape):
   except:
     neutrophil = np.zeros(mask_shape)
 
-  if 'train' in masks_folder_path:
+  if not(test):
     os.chdir('/content')
     return epithelial, lymphocyte, macrophage, neutrophil
 
-  if 'test' in masks_folder_path:
+  if test:
     try:
       ambiguous = skio.imread(os.path.join(masks_folder_path, 'Ambiguous', os.listdir(masks_folder_path+'/Ambiguous')[0]), plugin="tifffile")
       if(len(ambiguous.shape) == 2):
