@@ -10,7 +10,7 @@ import slideio
 class MonusacDataset(Dataset):
     '''MoNuSAC Dataset.'''
 
-    def __init__(self, img_dir, masks_dir, transform=None):
+    def __init__(self, img_dir, masks_dir, transform=None, blue_chan = False):
         '''
         Arguments:
             img_dir (string): Directory with all the images.
@@ -22,6 +22,7 @@ class MonusacDataset(Dataset):
         self.img_dir = img_dir
         self.masks_dir = masks_dir
         self.transform = transform
+        self.blue_chan = blue_chan
 
     def __len__(self):
         return count_images(self.img_dir)
@@ -46,6 +47,9 @@ class MonusacDataset(Dataset):
         slide = slideio.open_slide(svs_file,"SVS")
         scene = slide.get_scene(0)
         image = scene.read_block()
+      
+      if self.blue_chan:
+         image = image[-1]
 
       #mask extraction
       img_masks = []
