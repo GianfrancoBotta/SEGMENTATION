@@ -1,4 +1,4 @@
-def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True, merge_dir: bool = True, blue_chan: bool = False):
+def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True, merge_dir: bool = True, test: bool = False, blue_chan: bool = False):
   '''Creates train and validation patch directory and set the output directory for the patches
   to the given name.
 
@@ -6,12 +6,14 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
     images_path: a string indicating the path of the training folder
     masks_path: a string indicating the path of the masks folder
     dataset_name: a string indicating the name of the user's dataset ('Kumar', 'CPM17' or 'CoNSeP')
-    out_dir_name: a string indicating the name given to the output directory ('train' or 'valid')
+    out_dir_name: a string indicating the name given to the output directory ('train' or 'test')
     win_size: a list containing the x and y size of the patch window
     step_size: a list containing the x and y size of the step
     extract_type: a string containing the type of patch extraction ('valid' or 'mirror')
     type_classification: boolean determining whether to extract type map (only applicable to datasets with class labels)
     merge_dir: boolean determining whether the directories black_patches and patches have to be merged
+    test: boolean determining if the input dataset is for train or test purpose
+    blue_chan: boolean determining if images have three channels or only the blue one
     '''
   import cv2
   import random
@@ -72,9 +74,9 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
     macro = dataset[file_idx]['mask_macro']
     neutr = dataset[file_idx]['mask_neutr']
     conc = np.concatenate((img, ep, lym, macro, neutr), axis=-1)
-    # if 'test' in masks_path:
-    #   amb = dataset[file_idx]['mask_amb']
-    #   conc = np.concatenate((img, amb, ep, lym, macro, neutr), axis=-1)
+    if test:
+      amb = dataset[file_idx]['mask_amb']
+      conc = np.concatenate((img, amb, ep, lym, macro, neutr), axis=-1)
 
     pad_win_dim = [img.shape[0] + win_size[0] - step_size[0], img.shape[1] + win_size[1] - step_size[1]]
     if(pad_win_dim[0] < win_size[0] or pad_win_dim[1] < win_size[1]):
