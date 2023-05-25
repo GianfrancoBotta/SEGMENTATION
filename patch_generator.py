@@ -102,6 +102,8 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
 
       for idx, patch in enumerate(patches):
         patch_norm = cv2.normalize(patch[:,:,:img_channels], None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+        if len(patch_norm.shape) == 2:
+          patch_norm= np.expand_dims(patch_norm, axis=-1)
         patch_masks = patch[:,:,img_channels:]
         patch = np.concatenate((patch_norm, patch_masks), axis=-1)
         np.save("{0}/{1}_{2:03d}.npy".format(out_dir, base_name, idx), patch)
@@ -114,6 +116,8 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
     else:
       for idx, patch in enumerate(sub_patches):
         patch_norm = cv2.normalize(patch[:,:,:img_channels], None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+        if len(patch_norm.shape) == 2:
+          patch_norm= np.expand_dims(patch_norm, axis=-1)
         patch_masks = patch[:,:,img_channels:]
         patch = np.concatenate((patch_norm, patch_masks), axis=-1)
         np.save("{0}/{1}_{2:03d}.npy".format(out_dir, base_name, idx), patch)
@@ -124,6 +128,8 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
       pbarx.close()
       for idx, patch in enumerate(black_patches):
         patch_norm = cv2.normalize(patch[:,:,:img_channels], None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+        if len(patch_norm.shape) == 2:
+          patch_norm= np.expand_dims(patch_norm, axis=-1)
         patch_masks = patch[:,:,img_channels:]
         patch = np.concatenate((patch_norm, patch_masks), axis=-1)
         np.save("{0}/{1}_{2:03d}.npy".format(out_dir_black, base_name, idx), patch)
