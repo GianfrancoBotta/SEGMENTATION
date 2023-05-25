@@ -24,6 +24,7 @@ class MonusacDataset(Dataset):
         self.img_dir = img_dir
         self.masks_dir = masks_dir
         self.transform = transform
+	self.test = test
         self.blue_chan = blue_chan
 
     def __len__(self):
@@ -55,18 +56,16 @@ class MonusacDataset(Dataset):
       img_masks = []
       masks_folder_path = os.path.join(self.masks_dir, patient_code, img_name)
 
-      if not(test): 
+      if not(self.test): 
           ep, lym, macro, neutr = open_masks(masks_folder_path, image.shape)
           sample = {'name': img_name, 'image': image, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
 
-      if test:
+      if self.test:
           amb, ep, lym, macro, neutr = open_masks(masks_folder_path, image.shape)
           sample = {'name': img_name, 'image': image, 'mask_amb': amb, 'mask_ep': ep, 'mask_lym': lym, 'mask_macro': macro, 'mask_neutr': neutr}
 
       if self.blue_chan:
          sample['image'] = np.expand_dims(image[:,:,-1], axis=-1)
-
-
 
       if self.transform:
         sample = self.transform(sample)
