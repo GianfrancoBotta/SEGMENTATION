@@ -1,4 +1,4 @@
-def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True, merge_dir: bool = True, test: bool = False, blue_chan: bool = False):
+def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True, merge_dir: bool = True, test: bool = False, blue_chan: bool = False, working_dir: str = '\content'):
   '''Creates train and validation patch directory and set the output directory for the patches
   to the given name.
 
@@ -14,6 +14,7 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
     merge_dir: boolean determining whether the directories black_patches and patches have to be merged
     test: boolean determining if the input dataset is for train or test purpose
     blue_chan: boolean determining if images have three channels or only the blue one
+    working_dir: where to save the patches
     '''
   import cv2
   import random
@@ -25,8 +26,8 @@ def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_di
   from hover_net.misc.utils import rm_n_mkdir
 
   dataset = MonusacDataset(images_path, masks_path, blue_chan=blue_chan)
-  save_root = '/content/patches'
-  save_root_black = '/content/black_patches'
+  save_root = working_dir + '/patches'
+  save_root_black = working_dir + '/black_patches'
   parser = MonusacDataset
   xtractor = PatchExtractor(win_size, step_size)
   if blue_chan:
