@@ -60,7 +60,7 @@ def open_masks(masks_folder_path, image_shape, test=False):
     neutrophil = np.zeros(mask_shape)
 
   if not(test):
-    os.chdir('/content')
+    #os.chdir('/content')
     return epithelial, lymphocyte, macrophage, neutrophil
 
   if test:
@@ -71,7 +71,7 @@ def open_masks(masks_folder_path, image_shape, test=False):
     except:
       ambiguous = np.zeros(mask_shape)
 
-    os.chdir('/content')
+    #os.chdir('/content')
     return ambiguous, epithelial, lymphocyte, macrophage, neutrophil
 
 def rm_alpha(image):
