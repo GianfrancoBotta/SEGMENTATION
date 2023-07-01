@@ -81,3 +81,43 @@ def rm_alpha(image):
   if(shape[2] > 3):
     image = image[:, :, :3-shape[2]]
   return image
+
+def analyse_dataset(patches_dataset):
+    layer1_count = 0
+    layer2_count = 0
+    layer3_count = 0
+    layer4_count = 0
+    # Iterate over the dataset
+    for _, mask, _, _ in patches_dataset:
+        # Convert the mask array to a numpy array if needed
+        mask = np.array(mask[1:]) # doesn't take into account the bg
+        
+         #Count unique elements in each layer
+        unique_layer1 = np.unique(mask[0])[1:]
+        unique_layer2 = np.unique(mask[1])[1:]
+        unique_layer3 = np.unique(mask[2])[1:]
+        unique_layer4 = np.unique(mask[3])[1:]
+        # Update counts for each layer
+        layer1_count += len(unique_layer1)
+        layer2_count += len(unique_layer2)
+        layer3_count += len(unique_layer3)
+        layer4_count += len(unique_layer4)
+
+    # Calculate the total number of unique elements
+    total_unique_elements = layer1_count + layer2_count + layer3_count + layer4_count
+
+    # Calculate relative proportions
+    layer1_proportion = layer1_count / total_unique_elements
+    layer2_proportion = layer2_count / total_unique_elements
+    layer3_proportion = layer3_count / total_unique_elements
+    layer4_proportion = layer4_count / total_unique_elements
+
+    # Print the results
+    print("Epithelial - Count:", layer1_count)
+    print("Epithelial - Proportion: {:.2%}".format(layer1_proportion))
+    print("Lymphocyte - Count:", layer2_count)
+    print("Lymphocyte - Proportion: {:.2%}".format(layer2_proportion))
+    print("Macrophage - Count:", layer3_count)
+    print("Macrophage - Proportion: {:.2%}".format(layer3_proportion))
+    print("Neutrophil - Count:", layer4_count)
+    print("Neutrophil - Proportion: {:.2%}".format(layer4_proportion))
