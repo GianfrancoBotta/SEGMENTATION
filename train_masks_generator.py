@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 #Read svs files from the desired path
 
 count = 0
-data_path = '/content/MoNuSAC_Training_Data_and_Annotations'  # Path to read data from
+data_path = '/content/MoNuSAC_images_and_annotations'  # Path to read data from
 destination_path = '/content'  # Path to save n-ary masks corresponding to xml files
 os.chdir(destination_path)
 
