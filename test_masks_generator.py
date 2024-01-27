@@ -1,5 +1,4 @@
 import os
-import openslide
 from xml.dom import minidom
 import numpy as np
 import openslide
