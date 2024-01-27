@@ -1,5 +1,7 @@
 from glob import glob
 from SEGMENTATION.utils import count_images, open_masks, rm_alpha
+from SEGMENTATION.hv_masks_generator import *
+from SEGMENTATION.bin_masks_generator import *
 import torch
 import os
 from PIL import Image 
