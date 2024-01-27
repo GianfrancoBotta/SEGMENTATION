@@ -19,8 +19,8 @@ def count_images(folder):
       for file_name in os.listdir():
         if file_name.endswith('.xml'):
           len+=1
-      parent_path = os.path.abspath('..')     # parent folder path
-      os.chdir(parent_path)       # move to parent
+      parent_path = os.path.abspath('..') # parent folder path
+      os.chdir(parent_path) # move to parent
 
   return len
 
@@ -60,7 +60,6 @@ def open_masks(masks_folder_path, image_shape, test=False):
     neutrophil = np.zeros(mask_shape)
 
   if not(test):
-    #os.chdir('/content')
     return epithelial, lymphocyte, macrophage, neutrophil
 
   if test:
@@ -71,7 +70,6 @@ def open_masks(masks_folder_path, image_shape, test=False):
     except:
       ambiguous = np.zeros(mask_shape)
 
-    #os.chdir('/content')
     return ambiguous, epithelial, lymphocyte, macrophage, neutrophil
 
 def rm_alpha(image):
@@ -87,32 +85,32 @@ def analyse_dataset(patches_dataset):
     layer2_count = 0
     layer3_count = 0
     layer4_count = 0
-    # Iterate over the dataset
+    # iterate over the dataset
     for _, mask, _, _ in patches_dataset:
-        # Convert the mask array to a numpy array if needed
+        # convert the mask array to a numpy array if needed
         mask = np.array(mask[1:]) # doesn't take into account the bg
-        
-         #Count unique elements in each layer
+
+        # count unique elements in each layer
         unique_layer1 = np.unique(mask[0])[1:]
         unique_layer2 = np.unique(mask[1])[1:]
         unique_layer3 = np.unique(mask[2])[1:]
         unique_layer4 = np.unique(mask[3])[1:]
-        # Update counts for each layer
+        # update counts for each layer
         layer1_count += len(unique_layer1)
         layer2_count += len(unique_layer2)
         layer3_count += len(unique_layer3)
         layer4_count += len(unique_layer4)
 
-    # Calculate the total number of unique elements
+    # calculate the total number of unique elements
     total_unique_elements = layer1_count + layer2_count + layer3_count + layer4_count
 
-    # Calculate relative proportions
+    # calculate relative proportions
     layer1_proportion = layer1_count / total_unique_elements
     layer2_proportion = layer2_count / total_unique_elements
     layer3_proportion = layer3_count / total_unique_elements
     layer4_proportion = layer4_count / total_unique_elements
 
-    # Print the results
+    # print the results
     print("Epithelial - Count:", layer1_count)
     print("Epithelial - Proportion: {:.2%}".format(layer1_proportion))
     print("Lymphocyte - Count:", layer2_count)
