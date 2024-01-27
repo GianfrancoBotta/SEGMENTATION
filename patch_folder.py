@@ -1,4 +1,4 @@
-def patch_generator(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True, merge_dir: bool = True, test: bool = False, blue_chan: bool = False, working_dir: str = '\content'):
+def patch_folder(images_path: str, masks_path: str, dataset_name: str, out_dir_name: str, win_size:list, step_size: list, extract_type: str, type_classification: bool = True, merge_dir: bool = True, test: bool = False, blue_chan: bool = False, working_dir: str = '\content'):
   '''Creates train and validation patch directory and set the output directory for the patches
   to the given name.
 
