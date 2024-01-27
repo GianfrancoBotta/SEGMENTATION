@@ -1,7 +1,8 @@
+from albumentations.pytorch.transforms import ToTensorV2
 from glob import glob
 from SEGMENTATION.utils import count_images, open_masks, rm_alpha
-from SEGMENTATION.hv_masks_generator import *
-from SEGMENTATION.bin_masks_generator import *
+from SEGMENTATION.hv_masks_generator import generate_hv_map
+from SEGMENTATION.bin_masks_generator import convert_multiclass_mask_to_binary
 import torch
 import os
 from PIL import Image 
