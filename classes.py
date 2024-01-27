@@ -71,3 +71,70 @@ class MonusacDataset(Dataset):
         sample = self.transform(sample)
 
       return sample
+
+class PatchesDataset(Dataset):
+    '''Dataset of processed patches.'''
+
+    def __init__(self, patch_dir, geom_transform = None, color_transform = None, tensor_transform = True, test = False, blue_chan = False):
+        '''
+        Arguments:
+            patch_dir (string): Directory with all the patches.
+            geom_transform (callable, optional): Optional geometric transformations to be applied
+                on a sample.
+            color_transform (callable, optional): Optional color transformations to be applied
+                on a sample.
+            tensor_transform (bool): set this parameter to False if you don't want to convert the sample to torch.Tensor
+            test (bool): if true, it removes the ambiguous masks (4th channel)
+        '''
+
+        self.patch_dir = patch_dir
+        self.blue_chan = blue_chan
+        self.geom_transform = geom_transform
+        self.color_transform = color_transform
+        self.tensor_transform = tensor_transform
+        self.test = test
+
+    def __len__(self):
+        return len(os.listdir(self.patch_dir))
+
+    def __getitem__(self, idx):
+      if self.blue_chan:
+        img_channels = 1
+      else:
+        img_channels = 3
+      img_name = os.listdir(self.patch_dir)[idx]
+      image_and_masks = np.load(self.patch_dir + '/' + img_name)
+      image = image_and_masks[:,:, :img_channels].astype(np.float32)
+      masks = image_and_masks[:,:,img_channels:].astype(np.float32)
+
+      if self.geom_transform:
+        img_and_masks = self.geom_transform(image = image, mask = masks)
+        image = img_and_masks['image']
+        masks = img_and_masks['mask']
+      if self.color_transform:
+        img = self.color_transform(image = image)
+        image = img['image']
+
+      # add horizontal-vertical maps
+      hv_maps = generate_hv_map(masks)
+      hv_maps = np.transpose(hv_maps, (1, 2, 0))
+
+      if self.tensor_transform:
+        to_tensor = ToTensorV2()
+        img_and_masks_T = to_tensor(image = image, mask = masks)
+        image = img_and_masks_T['image'] # the numpy HWC image is converted to pytorch CHW tensor
+        masks = img_and_masks_T['mask'].permute(2, 0, 1)  # the numpy HWC masks are converted to pytorch HWC tensors
+        hv_maps = to_tensor(image=hv_maps)['image']
+
+      # add cell types
+      types = 'Epithelial', 'Lymphocyte', 'Macrophage', 'Neutrophil'
+
+      # add background masks
+      masks = masks[np.newaxis, ...]
+      # add binary masks
+      background_array = torch.logical_not(convert_multiclass_mask_to_binary(masks))
+      masks_bg = torch.cat((background_array, masks[0]), dim=0)
+
+      sample = image, masks_bg, hv_maps, types
+
+      return sample
